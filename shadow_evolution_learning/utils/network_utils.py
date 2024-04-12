@@ -3,17 +3,17 @@ from typing import Sequence, Callable
 import optax
 import jax
 import jax.numpy as jnp
+import numpy as np
 from .utils import makeRho
 from flax.training import train_state
 from .time_evolution_simulator import timeEvolution
-from .shadow_obs import estimate_shadow_observable
-import numpy as np
-from operations import denseXP, denseXM, denseYP, denseYM, denseZP, denseZM, zero_state, one_state, ket0, ket1, hadamard, phase_z, pX,pY, pZ
+from .operations import denseXP, denseXM, denseYP, denseYM, denseZP, denseZM, zero_state, one_state, ket0, ket1, hadamard, phase_z, pX,pY, pZ
+from ..shadow_sampling.shadow_obs import estimate_shadow_observable
 
 from jax.scipy.linalg import expm
 
 
-def createTrainState(key,lr,model,obsVal):
+def create_train_state(key,lr,model,obsVal):
     '''Create Training State'''
     key1,key2 = jax.random.split(key,2)
     params = model.init(key1,obsVal)
@@ -25,7 +25,7 @@ def lossfn(truth,pred):
     print(pred,truth)
     return jnp.mean(jnp.abs(pred-truth)**2)
 
-def trainStep(state,lossData,trainInp,model):
+def train_step(state,lossData,trainInp,model):
 
     def loss_fn(params):        
         preds = model.apply(params,trainInp)
@@ -85,3 +85,6 @@ def construct_test_vals(test_times,model,state,hamil,obs):
     finOut = model.apply(state.params,test_times[...,None])
     exact_obs = construct_exact_vals(test_times,hamil,obs)
     return finOut,exact_obs
+
+def periodic_actv_fn(x):
+    return x + jnp.sin(x)**2

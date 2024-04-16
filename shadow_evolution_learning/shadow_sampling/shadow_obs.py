@@ -1,8 +1,8 @@
 import numpy as np
 import jax
 import jax.numpy as jnp
-from operations import denseXP, denseXM, denseYP, denseYM, denseZP, denseZM, zero_state, one_state, ket0, hadamard, phase_z, pX, pZ
-from time_evolution_simulator import timeEvolution
+from ..utils.operations import denseXP, denseXM, denseYP, denseYM, denseZP, denseZM, zero_state, one_state, ket0, hadamard, phase_z, pX, pZ
+from ..utils.time_evolution_simulator import timeEvolution
 
 num_qubits = 2
 densities = [[denseXP,denseXM],[denseYP,denseYM],[denseZP,denseZM]]

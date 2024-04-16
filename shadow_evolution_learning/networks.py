@@ -18,6 +18,7 @@ class FFN(nn.Module):
             x = self.act(nn.Dense(l)(x)) + self.act(1.j*nn.Dense(l)(x))
         return nn.Dense(4)(x)
 
+
 class DAE(nn.Module):
     out: int = 6
     layers: Sequence = (50,10,5,10,30)

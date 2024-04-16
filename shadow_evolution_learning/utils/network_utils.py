@@ -17,7 +17,7 @@ def create_train_state(key,lr,model,obsVal):
     '''Create Training State'''
     key1,key2 = jax.random.split(key,2)
     params = model.init(key1,obsVal)
-    sgdOpt = optax.sgd(lr,momentum=0.9)
+    #sgdOpt = optax.sgd(lr,momentum=0.9)
     sgdOpt = optax.adam(lr)
     return train_state.TrainState.create(apply_fn=model.apply,params=params,tx=sgdOpt)
 

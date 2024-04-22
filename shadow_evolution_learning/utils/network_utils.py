@@ -68,7 +68,8 @@ def partial_trace(rho):
     return jnp.trace(rho,axis1=0,axis2=2)
 
 def construct_exact_vals(test_times,hamil,obs):
-    full_obs = []
+    full_obs_p = []
+    full_obs_q = []
     for t in test_times:
         phi_rho_t = process_mat(t,hamil)
 
@@ -77,8 +78,9 @@ def construct_exact_vals(test_times,hamil,obs):
         for o in obs:
             obsValsP.append(jnp.trace(partial_trace(o[0]@phi_rho_t)))
             obsValsQ.append(np.trace(partial_trace(o[1]@phi_rho_t)))
-        full_obs.append([obsValsP,obsValsQ])
-    full_obs = np.array(full_obs)
+        full_obs_p.append(obsValsP)
+        full_obs_q.append(obsValsQ)
+    full_obs = jnp.concatenate([np.array(full_obs_p),np.array(full_obs_q)],axis=-1)
     return full_obs
 
 def construct_test_vals(test_times,model,state,hamil,obs):

@@ -50,3 +50,14 @@ class DAE_periodic(nn.Module):
         for l in self.layers:
             x = self.act(nn.Dense(l)(x))
         return nn.Dense(self.out)(x)
+
+class denoising_prep(nn.Module):
+    layers: Sequence = (30,20,10,5,10,20,30)
+    act: Callable = periodic_actv_fn
+
+    @nn.compact
+    def __call__(self,x):
+        out_shape = x.shape[-1]
+        for l in self.layers:
+            x = self.act(nn.Dense(l)(x))
+        return nn.Dense(out_shape)(x)
